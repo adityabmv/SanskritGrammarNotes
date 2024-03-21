@@ -82,29 +82,29 @@ with noun_forms:
                     base_stem = {
                         "singular": [
                             "s",
-                            f"am {sutra_link("6.1.107")} <br> =-m",
-                            f"ā  {sutra_link("7.3.120")} <br> -na",
-                            f" guṇa-i {sutra_link("7.3.111")} <br> + <br> e <br> = -aye",
-                            f" guṇa-i {sutra_link("7.3.111")} <br> + <br> -as{sutra_link("6.1.110")} <br> = -es",
-                            f" guṇa-i {sutra_link("7.3.111")} <br> + <br> -as{sutra_link("6.1.110")} <br> = -es",
-                            f"i {sutra_link("7.3.119")} <br> = -au",
+                            f"am {sutra_link('6.1.107') } <br> =-m",
+                            f"ā  {sutra_link('7.3.120')} <br> -na",
+                            f" guṇa-i {sutra_link('7.3.111')} <br> + <br> e <br> = -aye",
+                            f" guṇa-i {sutra_link('7.3.111')} <br> + <br> -as{sutra_link('6.1.110')} <br> = -es",
+                            f" guṇa-i {sutra_link('7.3.111')} <br> + <br> -as{sutra_link('6.1.110')} <br> = -es",
+                            f"i {sutra_link('7.3.119')} <br> = -au",
                             f"s"
                         ],
                         "dual": [
-                            f"-au {sutra_link("6.1.102")} <br> = ī",
+                            f"-au {sutra_link('6.1.102')} <br> = ī",
                             f"-bhyām",
                             f"-os"
                         ],
                         "plural": [
-                            f" guṇa i {sutra_link("7.3.109")} <br> + <br> as <br> = -ayas",
-                            f" as {sutra_link("6.1.102")} <br> -īs {sutra_link("6.1.103")} <br> = -īn",
+                            f" guṇa i {sutra_link('7.3.109')} <br> + <br> as <br> = -ayas",
+                            f" as {sutra_link('6.1.102')} <br> -īs {sutra_link('6.1.103')} <br> = -īn",
                             f"-bhis",
                             f"-bhyas",
-                            f"-ām {sutra_link("7.1.54")} <br>-nām {sutra_link("6.4.3")} <br> = -īnām",
+                            f"-ām {sutra_link('7.1.54')} <br>-nām {sutra_link('6.4.3')} <br> = -īnām",
                             f"-su"]
                     }
                     st.write("#### General Rule")
-                    st.write(f"s/स् in the final form becomes ḥ/ः {sutra_link("8.2.66")},{sutra_link("8.3.15")}", unsafe_allow_html=True)
+                    st.write(f"s/स् in the final form becomes ḥ/ः {sutra_link('8.2.66')},{sutra_link('8.3.15')}", unsafe_allow_html=True)
                     raw, base, example = st.columns([1,1.3,1.2])
 
                     with raw:
