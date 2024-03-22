@@ -3,27 +3,48 @@ import re
 def iast_to_dev(string:str):
     return devtrans.slp2dev(devtrans.iast2slp(string))
 
-def process_string(string):
-   """Processes a string, applying iast_to_dev only to non-HTML parts.
 
-   Args:
-       string: The input string.
-       iast_to_dev: A function that takes a string as input and returns the transformed string.
+import re
 
-   Returns:
-       The processed string with iast_to_dev applied to non-HTML parts.
-   """
+import re
 
-   parts = re.split(r"(<[^>]*>)", string)  # Split string into HTML and non-HTML parts
-   output = []
 
-   for part in parts:
-       if re.match(r"<[^>]*>", part):  # Check if it's an HTML part
-           output.append(part)  # Append HTML part as is
-       else:
-           output.append(iast_to_dev(part))  # Apply iast_to_dev to non-HTML part
+def process_string(input_string):
+    # Regular expression to find markdown links and HTML tags
+    markdown_and_html_pattern = r'(\[([^\]]+)\]\((.*?)\)|<[^>]+>)'
 
-   return "".join(output)
+    # Find all markdown links and HTML tags in the input string
+    matches = re.finditer(markdown_and_html_pattern, input_string)
+
+    # Initialize variables
+    processed_string = ''
+    last_index = 0
+
+    # Iterate through matches
+    for match in matches:
+        start, end = match.span()
+
+        # Process the text before the current match
+        processed_string += iast_to_dev(input_string[last_index:start])
+
+        # Check if the match is a markdown link
+        if input_string[start] != '<':
+            # Process the text inside square brackets of the markdown link
+            link_text_start = start + 1
+            link_text_end = input_string.find(']', link_text_start, end)
+            processed_string += '[' + iast_to_dev(input_string[link_text_start:link_text_end]) + ']'
+            processed_string += input_string[link_text_end + 1:end]
+        else:
+            # Add the match without processing if it's an HTML tag
+            processed_string += input_string[start:end]
+
+        # Update last index
+        last_index = end
+
+    # Process the remaining text after the last match
+    processed_string += iast_to_dev(input_string[last_index:])
+    print(processed_string)
+    return processed_string
 
 def get_nominal_form(singular, dual, plural, convert_to_devanagari):
     singular = singular
@@ -31,7 +52,7 @@ def get_nominal_form(singular, dual, plural, convert_to_devanagari):
     plural = plural
     if convert_to_devanagari:
         for i in range(len(singular)):
-            singular[i]= process_string(singular[i])
+            singular[i] = process_string(singular[i])
         for i in range(len(dual)):
             dual[i] = process_string(dual[i])
         for i in range(len(plural)):
