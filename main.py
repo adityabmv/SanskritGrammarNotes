@@ -88,7 +88,7 @@ with noun_forms:
                             f" [guṇa-i(e)]({sutra_link('7.3.111')}) + -[as]({sutra_link('6.1.110')}) <br> = -es",
                             f" [guṇa-i(e)]({sutra_link('7.3.111')}) + -[as]({sutra_link('6.1.110')}) <br> = -es",
                             f" [i]({sutra_link('7.3.119')}) <br> = -au",
-                            f"[guṇa-i(e)]({sutra_link("7.3.108")}) + [s]({sutra_link("6.1.69")}) <br>= e"
+                            f"[guṇa-i(e)]({sutra_link('7.3.108')}) + [s]({sutra_link('6.1.69')}) <br>= e"
                         ],
                         "dual": [
                             f"-[au]({sutra_link('6.1.102')})<br> = ī",
