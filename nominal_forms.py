@@ -43,33 +43,32 @@ def process_string(input_string):
 
     # Process the remaining text after the last match
     processed_string += iast_to_dev(input_string[last_index:])
-    print(processed_string)
     return processed_string
 
 def get_nominal_form(singular, dual, plural, convert_to_devanagari):
-    singular = singular
-    dual = dual
-    plural = plural
+    t_singular = singular
+    t_dual = dual
+    t_plural = plural
     if convert_to_devanagari:
-        for i in range(len(singular)):
-            singular[i] = process_string(singular[i])
-        for i in range(len(dual)):
-            dual[i] = process_string(dual[i])
+        for i in range(len(t_singular)):
+            t_singular[i] = process_string(t_singular[i])
+        for i in range(len(t_dual)):
+            t_dual[i] = process_string(t_dual[i])
         for i in range(len(plural)):
-            plural[i] = process_string(plural[i])
+            t_plural[i] = process_string(t_plural[i])
 
 
     stem = f"""
     |**Case**| Singular | Dual | Plural|  
     |-|-|-|-|  
-    |**Nominative** (Subject)|{singular[0]}|{dual[0]}| {plural[0]}|
-    |**Accusative** (Object)|{singular[1]}|{dual[0]}| {plural[1]}|
-    |**Instrumental** (By/With)|{singular[2]}|{dual[1]}| {plural[2]}|
-    |**Dative** (For)|{singular[3]}|{dual[1]}| {plural[3]}|
-    |**Absolutive** (From)|{singular[4]}|{dual[1]}| {plural[3]}|
-    |**Genitive** (Of)|{singular[5]}|{dual[2]}| {plural[4]}|
-    |**Locative** (In/On)|{singular[6]}|{dual[2]}| {plural[5]}|
-    |**Vocative** (Addressing)|{singular[7]}|{dual[0]}| {plural[0]}|
+    |**Nominative** (Subject)|{t_singular[0]}|{t_dual[0]}| {t_plural[0]}|
+    |**Accusative** (Object)|{t_singular[1]}|{t_dual[0]}| {t_plural[1]}|
+    |**Instrumental** (By/With)|{t_singular[2]}|{t_dual[1]}| {t_plural[2]}|
+    |**Dative** (For)|{t_singular[3]}|{t_dual[1]}| {t_plural[3]}|
+    |**Ablative** (From)|{t_singular[4]}|{t_dual[1]}| {t_plural[3]}|
+    |**Genitive** (Of)|{t_singular[5]}|{t_dual[2]}| {t_plural[4]}|
+    |**Locative** (In/On)|{t_singular[6]}|{t_dual[2]}| {t_plural[5]}|
+    |**Vocative** (Addressing)|{t_singular[7]}|{t_dual[0]}| {t_plural[0]}|
     """
     return stem
 

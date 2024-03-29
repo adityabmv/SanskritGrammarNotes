@@ -1,7 +1,11 @@
 import streamlit as st
 from nominal_forms import get_nominal_form
-
+from data.nominals.raw_stem import RAW_STEM
+from data.nominals.masculine.all_data import masculine_data
+from utils import sutra_link
 from pathlib import Path
+import copy
+
 
 # Define custom theme
 def custom_theme():
@@ -11,128 +15,61 @@ def custom_theme():
         layout="wide",
     )
 
+
 def read_markdown_file(filepath):
-  """
-  This function reads the content of a markdown file.
+    """
+    This function reads the content of a markdown file.
 
-  Args:
-      filepath (str): Path to the markdown file.
+    Args:
+        filepath (str): Path to the markdown file.
 
-  Returns:
-      str: Content of the markdown file.
-  """
-  return Path(filepath).read_text()
+    Returns:
+        str: Content of the markdown file.
+    """
+    return Path(filepath).read_text()
 
 
 custom_theme()
 
 st.header("Sanskrit Reference")
-use_devanagari = st.checkbox("Use Devanagari", value=False)
+use_devanagari = st.checkbox("Use Devanagari", value=False,key="globaldev")
 title_headings = {
-    "Devanagari" : ["शब्ध रूप", "धातु रूप", "सन्धि"],
+    "Devanagari": ["शब्ध रूप", "धातु रूप", "सन्धि"],
     "IAST": ["Nominal Forms", "Verbs Forms", "Euphonic Combinations", "Rules Classfication"]
 }
 
 noun_forms, verb_forms, sandhi, rules = st.tabs(title_headings["IAST"])
 
-def sutra_link(sutra:str):
-    return f"https://ashtadhyayi.com/sutraani/{sutra}"
 
 
 with noun_forms:
-    genders =  st.tabs(["Masculine","Feminine","Neuter"])
-
-
-
+    genders = st.tabs(["Masculine", "Feminine", "Neuter"])
     with genders[0]:
-        forms = st.tabs(["a-stem", "i-stem", "u-stem","ṛ-stem","s-stem"])
+        forms = st.tabs(["a-stem", "i-stem", "u-stem", "ṛ-stem"])
+        raw, base, example = st.columns([1, 1, 1])
         for i in range(len(forms)):
             with forms[i]:
-                if i == 0:
-                    example_stem = {
-                        "singular": ["rāmaḥ","rāmam","rāmeṇa","rāmāya","rāmāt","rāmasya","rāme","rāma"],
-                        "dual":["rāmau","rāmābhyām","rāmayoḥ"],
-                        "plural": ["rāmāḥ","rāmān","rāmaiḥ","rāmebhyaḥ","rāmāṇām","rāmeṣu"]
-                    }
-                    st.markdown(get_nominal_form(example_stem["singular"],example_stem["dual"],example_stem["plural"], use_devanagari))
-                if i == 1:
-                    example_stem = {
-                        "singular": ["agniḥ", "agnim", "agninā", "agnaye", "agneḥ", "agneḥ", "agnau", "agne"],
-                        "dual":["agnī","agnibhyām","agnyoḥ"],
-                        "plural": ["agnayaḥ","agnīn","agnibhiḥ","agnibhyaḥ","agnīnām","agniṣu"]
-                    }
-                    raw_stem = {
-                        "singular": [
-                            f"-s",
-                            f"-am",
-                            f"-ā",
-                            f"-e",
-                            f"-as",
-                            f"-as",
-                            f"-i",
-                            f"-s"
-                        ],
-                        "dual": [
-                            f"-au",
-                            f"-bhyām",
-                            f"-os"
-                        ],
-                        "plural": ["-as", "-as", "-bhis", "-bhyas", "-ām", "-su"]
-                    }
-                    base_stem = {
-                        "singular": [
-                            "s",
-                            f"[am]({sutra_link('6.1.107')}) = -m",
-                            f"[ā]({sutra_link('7.3.120')}) <br> -nā",
-                            f" [guṇa-i(e)]({sutra_link('7.3.111')}) + e <br> = -aye",
-                            f" [guṇa-i(e)]({sutra_link('7.3.111')}) + -[as]({sutra_link('6.1.110')}) <br> = -es",
-                            f" [guṇa-i(e)]({sutra_link('7.3.111')}) + -[as]({sutra_link('6.1.110')}) <br> = -es",
-                            f" [i]({sutra_link('7.3.119')}) <br> = -au",
-                            f"[guṇa-i(e)]({sutra_link('7.3.108')}) + [s]({sutra_link('6.1.69')}) <br>= e"
-                        ],
-                        "dual": [
-                            f"-[au]({sutra_link('6.1.102')})<br> = ī",
-                            f"-bhyām",
-                            f"-os"
-                        ],
-                        "plural": [
-                            f" [guṇa-i(e)]({sutra_link('7.3.109')}) + as <br> = -ayas",
-                            f" [as]({sutra_link('6.1.102')}) <br> -[īs]({sutra_link('6.1.103')}) <br> = -īn",
-                            f"-bhis",
-                            f"-bhyas",
-                            f"-[ām]({sutra_link('7.1.54')}) <br>-[nām]({sutra_link('6.4.3')}) <br> = -īnām",
-                            f"-su"]
-                    }
-                    st.write("#### General Rule")
-                    st.write(f"s/स् in the final form becomes ḥ/ः {sutra_link('8.2.66')},{sutra_link('8.3.15')}", unsafe_allow_html=True)
-                    raw, base, example = st.columns([1,1.3,1.2])
+                st.write("#### General Rule")
+                st.write(
+                    f"s/स् in the final form becomes ḥ/ः [8.2.66]({sutra_link('8.2.66')}),[8.3.15]({sutra_link('8.3.15')})",
+                    unsafe_allow_html=True)
+                st.write("Base stem rules for **a-stem** not yet complete.")
+                raw, base, example = st.columns([1, 1.3, 1.2])
+                with raw:
+                    raw_stem = copy.deepcopy(RAW_STEM)
+                    st.markdown(get_nominal_form(raw_stem["singular"], raw_stem["dual"], raw_stem["plural"],use_devanagari),unsafe_allow_html=True)
+                with base:
 
-                    with raw:
-                        st.header("Base")
-                        st.markdown(get_nominal_form(raw_stem["singular"], raw_stem["dual"], raw_stem["plural"],
-                                                     use_devanagari), unsafe_allow_html=True)
-                    with base:
-                        st.header("Stem Based Changes")
-                        st.markdown(get_nominal_form(base_stem["singular"], base_stem["dual"], base_stem["plural"], use_devanagari), unsafe_allow_html=True)
-                    with example:
-                        st.header("Example")
-                        st.markdown(get_nominal_form(example_stem["singular"],example_stem["dual"],example_stem["plural"], use_devanagari))
-                if i == 2:
-                    example_stem = {
-                        "singular": ["vāyuḥ","vāyum","vāyunā","vāyave","vāyoḥ","vāyoḥ","vāyau","vāyo"],
-                        "dual":["vāyū","vāyubhyām","vāyvoḥ"],
-                        "plural": ["vāyavaḥ","vāyūn","vāyubhiḥ","vāyubhyaḥ","vāyūnām","vāyuṣu"]
-                    }
-                    raw_stem = {
-                        "singular": ["-ḥ", "-m", "-nā", "-(guṇa u)+e = -o+e = -ave", "-(guṇa u)+ḥ = -oḥ", "-(guṇa u)+ḥ= -oḥ", "-(vṛddhi u) = -au", "-(guṇa u) = -o"],
-                        "dual": ["-u", "-bhyām", "-oḥ"],
-                        "plural": ["-(guṇa u)+ aḥ = -avaḥ", "-un", "-bhiḥ", "-bhyaḥ", "-unām", "-su"]
-                    }
-                    base, example = st.columns([1,1])
-                    with base:
-                        st.markdown(get_nominal_form(raw_stem["singular"], raw_stem["dual"], raw_stem["plural"], use_devanagari), unsafe_allow_html=True)
-                    with example:
-                        st.markdown(get_nominal_form(example_stem["singular"],example_stem["dual"],example_stem["plural"], use_devanagari))
+
+                    base_stem = copy.deepcopy(masculine_data[i][0])
+                    st.markdown(
+                        get_nominal_form(base_stem["singular"], base_stem["dual"], base_stem["plural"], use_devanagari),
+                        unsafe_allow_html=True)
+                with example:
+                    example_stem = copy.deepcopy(masculine_data[i][1])
+                    st.markdown(
+                        get_nominal_form(example_stem["singular"], example_stem["dual"], example_stem["plural"], use_devanagari),
+                        unsafe_allow_html=True)
 
 with sandhi:
     sandhis = st.tabs(["Visarga Sandhi"])
@@ -140,6 +77,7 @@ with sandhi:
     with sandhis[0]:
         if use_devanagari:
             data = """
+            
             ||कर्कशव्यञ्जनम्|मृदुव्यञ्जनम्|
 |:-:|:-:|:-:|
 |**कण्ठ्य**|क्, ख्| ग्, घ्, ङ्, ह्|
